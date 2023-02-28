@@ -1,0 +1,35 @@
+#!/bin/bash
+#Find all avaiable exe file in terminal by default
+
+xIFS=$IFS
+IFS=:
+last=""
+new_file=$((0))
+
+for line in $PATH/*
+do
+    for file in $line/*
+    do
+        if [ -x $file ]
+        then
+            #get last word from string
+            IFS=/
+            for command in $file
+            do
+                last=$command
+            done
+
+            #create new file and send data there
+            if (( $new_file == 0 ))
+            then
+                 echo "$last" > logfile.txt
+                 new_file=$((1))
+            else
+                echo "$last" >> logfile.txt
+            fi
+
+            IFS=:
+        fi
+    done
+done
+
